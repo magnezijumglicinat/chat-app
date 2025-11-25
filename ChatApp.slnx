@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="../Server/Server.csproj" />
+  <Project Path="Zajednicki/Zajednicki.csproj" Id="4e1224a8-464b-4f45-874c-29de554c302c" />
 </Solution>
