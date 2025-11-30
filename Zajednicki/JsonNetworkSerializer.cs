@@ -14,9 +14,9 @@ namespace Zajednicki
         private StreamReader reader;
         private StreamWriter writer;
 
-        public JsonNetworkSerializer(Socket socket)
+        public JsonNetworkSerializer(Socket s)
         {
-           this.socket = socket;
+           socket = s;
             stream = new NetworkStream(socket);
             reader = new StreamReader(stream);
             writer = new StreamWriter(stream)
@@ -30,8 +30,6 @@ namespace Zajednicki
             string json = JsonSerializer.Serialize(z);
             token.ThrowIfCancellationRequested();
             await writer.WriteLineAsync(json);
-            await writer.FlushAsync();
-
         }
         public async Task<T> ReceiveAsync<T>(CancellationToken token = default)
         {
@@ -41,10 +39,15 @@ namespace Zajednicki
                 throw new IOException("Konekcija je zatvorena.");
             return JsonSerializer.Deserialize<T>(json)!;
         }
-       /* public T ReadType<T>(object podaci) where T : class
+        public T ReadType<T>(JsonElement podaci) where T : class
         {
-            return podaci == null ? null : JsonSerializer.Deserialize<T>((JsonElement)podaci);
-        }*/
+            var result = JsonSerializer.Deserialize<T>(podaci.GetRawText());
+            if (result == null)
+                throw new InvalidOperationException("Deserijalizacija ne funkcionise.");
+
+            return result;
+        }
+
         public void Close()
         {
             stream?.Dispose();

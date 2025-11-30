@@ -6,10 +6,7 @@ namespace Zajednicki
 {
     public class Odgovor
     {
-        private object rezultat;
-        private string poruka;
         public object Rezultat { get; set; }
         public string Poruka { get; set; }
-
     }
 }
