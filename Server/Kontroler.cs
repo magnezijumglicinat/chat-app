@@ -35,6 +35,14 @@ namespace Server
             return ((LoginSO)log).Uspesno;
 
         }
+
+        internal async Task<bool> Pretrazi(string v)
+        {
+            SystemOperationsBase pob = new PretraziSO(v);
+            pob.Execute();
+            return ((PretraziSO)pob).Uspesno;
+        }
+
         internal async Task<bool> RegistrujSe(Korisnik korisnik)
         {
             SystemOperationsBase rog = new RegistrujSeSO(korisnik);

@@ -8,6 +8,7 @@ namespace Zajednicki
     {
         LogIn,
         RegistrujSe,
-        Dostupnost
+        Dostupnost,
+        Pretraga
     };
 }

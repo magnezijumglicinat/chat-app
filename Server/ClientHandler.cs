@@ -63,6 +63,9 @@ namespace Server
                     case Operacija.RegistrujSe:
                         o.Uspesno = await Kontroler.Instance.RegistrujSe(serializer.ReadType<Korisnik>((JsonElement)z.Objekat));
                         break;
+                    case Operacija.Pretraga:
+                        o.Uspesno = await Kontroler.Instance.Pretrazi(serializer.ReadType<string>((JsonElement)z.Objekat));
+                        break;
                 }
             }
             catch { }

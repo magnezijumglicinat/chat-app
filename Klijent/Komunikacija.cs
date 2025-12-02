@@ -100,5 +100,21 @@ namespace Klijent
                 return o;
             }
         }
+
+        internal async Task<Odgovor> Pretrazi(string msgText)
+        {
+            try
+            {
+                Zahtev z = new Zahtev(Operacija.Pretraga, msgText);
+                serializer.SendAsync(z);
+                Odgovor o = await serializer.ReceiveAsync<Odgovor>();
+                return o;
+            }catch(Exception x)
+            {
+                Odgovor o = new Odgovor();
+                o.Poruka = "greska";
+                return o;
+            }
+        }
     }
 }
