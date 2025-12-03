@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Klijent.Domen;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
@@ -12,8 +13,11 @@ namespace Server
         private Socket serverskiSocket;
         private CancellationTokenSource cts;
         private List<ClientHandler> handleri;
+        internal List<string> onlineUsers;
+        
         public Server()
         {
+            onlineUsers = new List<string>();
             serverskiSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             handleri = new List<ClientHandler>();
 
@@ -79,6 +83,15 @@ namespace Server
         {
             lock(_lock)
                 handleri.Remove(clientHandler);
+         
+        }
+
+        internal bool isOnline(Korisnik l, ClientHandler clientHandler)
+        {
+            foreach (var x in onlineUsers)
+                if (x == l.Korisnicko_ime.ToString())
+                    return true;
+            return false;
         }
     }
    

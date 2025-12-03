@@ -186,7 +186,8 @@
                      Grid.Row="2"
                      Background="Transparent"
                      BorderThickness="0"
-                     Foreground="{StaticResource TextOnDark}">  
+                     Foreground="{StaticResource TextOnDark}"
+                             SelectionChanged="Kontakti_SelectionChanged">  
                     </ListBox>
                 </Grid>
             </Border>
@@ -208,7 +209,8 @@
                             <StackPanel Orientation="Vertical"
                                         DockPanel.Dock="Left"
                                         VerticalAlignment="Center">
-                                <TextBlock Text="General"
+                                <TextBlock x:Name="user"
+                                    Text="General"
                                            FontSize="16"
                                            FontWeight="Bold"
                                            Foreground="{StaticResource TextOnDark}"/>

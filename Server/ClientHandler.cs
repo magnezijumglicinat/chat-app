@@ -12,10 +12,12 @@ namespace Server
     {
         public Socket socket;
         private Server server;
+        
         private JsonNetworkSerializer serializer;
 
         public ClientHandler(Socket socket,Server server)
         {
+           
             this.socket = socket;
             this.server = server;
             serializer = new JsonNetworkSerializer(this.socket);
@@ -44,6 +46,7 @@ namespace Server
                 }
                 catch { }
                 server.RemoveClient(this);
+                
             }
         }
 
@@ -55,7 +58,16 @@ namespace Server
                 switch(z.Operacija)
                 {
                     case Operacija.LogIn:
-                       o.Uspesno = await Kontroler.Instance.LogIn(serializer.ReadType<Korisnik>((JsonElement)z.Objekat));
+                        var l = serializer.ReadType<Korisnik>((JsonElement)z.Objekat);
+                        if (server.isOnline(l, this))
+                        {
+                            o.Poruka = "logovan";
+                            break;
+                        }
+                        o.Uspesno = await Kontroler.Instance.LogIn(l);
+                        if (o.Uspesno)
+                            server.onlineUsers.Add(l.Korisnicko_ime.ToString());
+
                         break;
                     case Operacija.Dostupnost:
                         o.Uspesno = await Kontroler.Instance.Dostupan(serializer.ReadType<Korisnik>((JsonElement)z.Objekat));
@@ -66,11 +78,12 @@ namespace Server
                     case Operacija.Pretraga:
                         o.Uspesno = await Kontroler.Instance.Pretrazi(serializer.ReadType<string>((JsonElement)z.Objekat));
                         break;
+            
                 }
+                if (o.Poruka == "logovan")
+                    throw new Exception("login exception");
             }
-            catch { }
-            if (o.Poruka == "greska")
-                throw new Exception("login exception");
+            catch  { }
             return o;
         }
     }

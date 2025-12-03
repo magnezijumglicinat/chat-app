@@ -33,6 +33,11 @@ namespace Klijent.Kontroleri_GUI_
                 Korisnik k = new Korisnik(korisnicko_ime, lozinka);
                 Komunikacija.Instance.Connect();
                 Odgovor o = await Komunikacija.Instance.LogInAsync(k);
+                if(o.Poruka == "logovan")
+                {
+                    MessageBox.Show("Vec je ulogovan korisnik sa pomenutim kredencijalima.");
+                    return;
+                }
                 if(!o.Uspesno)
                 {
                     MessageBox.Show("Pogresni kredencijali. Pokusajte ponovo.");
@@ -42,7 +47,7 @@ namespace Klijent.Kontroleri_GUI_
                 {
                     MessageBox.Show("Uspesno logovanje. Dobrodosli - " + k.Korisnicko_ime + ".");
                     MainWindow window = new MainWindow(k);
-                    window.ShowDialog();
+                    window.Show();
                 }
                 
             }

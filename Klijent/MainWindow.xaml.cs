@@ -76,6 +76,14 @@ namespace Klijent
             };
             Kontakti.Items.Add(i);
             
+            
+        }
+
+        private void Kontakti_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var kontakt = Kontakti.SelectedItem as ListBoxItem;
+
+            user.Text = kontakt.Content.ToString();
         }
     }
 }
