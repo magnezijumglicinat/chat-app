@@ -76,5 +76,18 @@ namespace BrokerBazePodataka
             int affectedRows = cmd.ExecuteNonQuery();
             return affectedRows;
         }
+        public List<IObjekat> GetAllJoin(IObjekat obj,int id)
+        {
+            
+            List<IObjekat> result;
+            string sql = $"select k.korisnicko_ime from Prijateljstvo p join Korisnik k on((p.korisnik1_id = {id} AND k.id = p.korisnik2_id)" +
+                $" or (p.korisnik2_id = {id} AND k.id = p.korisnik1_id)) " +
+                $"WHERE p.status = 'ACCEPTED';";
+            SqlCommand cmd = CreateCmd(sql);
+            SqlDataReader dr = cmd.ExecuteReader();
+            result = obj.vratiObjekteJoin(dr);
+            dr.Close();
+            return result;
+        }
     }
 }

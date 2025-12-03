@@ -35,20 +35,31 @@ namespace Klijent.Domen
 
         public List<IObjekat> vratiObjekteJoin(SqlDataReader dr)
         {
-            throw new NotImplementedException();
+            List<IObjekat> koki = new List<IObjekat>();
+            while(dr.Read())
+            {
+                Korisnik kok1 = new Korisnik();
+                kok1.Korisnicko_ime = (string)dr["korisnicko_ime"];
+                koki.Add(kok1);
+            }
+            if (koki.Count == 0)
+                return null;
+            return koki;           
         }
 
         public IObjekat vratiObjekat(SqlDataReader dr)
         {
-            if (!dr.Read())
-                return null;
-            Korisnik k = new Korisnik();
+
+            Korisnik k = null;
             while (dr.Read())
             {
+                k = new Korisnik();
                 k.Id = (int)dr["Id"];
                 k.Korisnicko_ime = (string)dr["Korisnicko_ime"];
                 k.Lozinka = (string)dr["Lozinka"];
             }
+            if (k == null)
+                return null;
             return k;
         }
 

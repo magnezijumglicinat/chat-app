@@ -22,6 +22,7 @@ namespace Klijent.Kontroleri_GUI_
                 return instance;
             }
         }
+        public List<Korisnik> prijatelji = new List<Korisnik>();
 
         internal async Task<string> Pretrazi(string msgtext)
         {
@@ -45,5 +46,25 @@ namespace Klijent.Kontroleri_GUI_
                 return "greska";
             }
         }
+
+        internal async Task vratiSvePrijatelje(Korisnik id)
+        {
+            try
+            {
+                Komunikacija.Instance.Connect();
+                Odgovor o = await Komunikacija.Instance.vratiSvePrijatelje(id);
+                if (o.Rezultat != null)
+                {
+                    prijatelji = (List<Korisnik>)o.Rezultat;
+                }
+
+            }
+            catch(Exception x)
+            {
+                return;
+            }
+        }
+
+      
     }
 }

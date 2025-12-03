@@ -74,16 +74,21 @@ namespace Server
             }
             lock (_lock)
                 handleri.Clear();
-            serverskiSocket.Close();    
+            serverskiSocket.Close();
+            onlineUsers = new List<string>();
         }
 
 
         object _lock = new object();
-        internal void RemoveClient(ClientHandler clientHandler)
+        internal void RemoveClient(ClientHandler clientHandler,string currentUser)
         {
-            lock(_lock)
+            lock (_lock)
+            {
                 handleri.Remove(clientHandler);
-         
+                if(currentUser != null)
+                    onlineUsers.Remove(currentUser.ToString());
+
+            }
         }
 
         internal bool isOnline(Korisnik l, ClientHandler clientHandler)

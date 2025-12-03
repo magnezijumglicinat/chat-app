@@ -12,7 +12,7 @@ namespace Server
     {
         public Socket socket;
         private Server server;
-        
+        private string currentUser;
         private JsonNetworkSerializer serializer;
 
         public ClientHandler(Socket socket,Server server)
@@ -45,7 +45,7 @@ namespace Server
                         socket.Close();
                 }
                 catch { }
-                server.RemoveClient(this);
+                server.RemoveClient(this,currentUser);
                 
             }
         }
@@ -64,9 +64,10 @@ namespace Server
                             o.Poruka = "logovan";
                             break;
                         }
-                        o.Uspesno = await Kontroler.Instance.LogIn(l);
+                        o = await Kontroler.Instance.LogIn(l);
                         if (o.Uspesno)
                             server.onlineUsers.Add(l.Korisnicko_ime.ToString());
+                        currentUser = l.Korisnicko_ime.ToString();
 
                         break;
                     case Operacija.Dostupnost:
@@ -77,6 +78,9 @@ namespace Server
                         break;
                     case Operacija.Pretraga:
                         o.Uspesno = await Kontroler.Instance.Pretrazi(serializer.ReadType<string>((JsonElement)z.Objekat));
+                        break;
+                    case Operacija.Prijatelji:
+                        o.Rezultat = await Kontroler.Instance.Prijatelji(serializer.ReadType<Korisnik>((JsonElement)z.Objekat));
                         break;
             
                 }

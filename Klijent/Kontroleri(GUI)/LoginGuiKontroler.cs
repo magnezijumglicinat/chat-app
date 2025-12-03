@@ -21,14 +21,14 @@ namespace Klijent.Kontroleri_GUI_
                 return instance;
             }
         }
-        internal async Task LogIn(string korisnicko_ime,string lozinka)
+        internal async Task<bool> LogIn(string korisnicko_ime,string lozinka)
         {
             try
             {
                 if (korisnicko_ime == "" || lozinka == "")
                 {
                     MessageBox.Show("Morate uneti korisnicko ime i lozinku.");
-                    return;
+                    return false;
                 }
                 Korisnik k = new Korisnik(korisnicko_ime, lozinka);
                 Komunikacija.Instance.Connect();
@@ -36,25 +36,29 @@ namespace Klijent.Kontroleri_GUI_
                 if(o.Poruka == "logovan")
                 {
                     MessageBox.Show("Vec je ulogovan korisnik sa pomenutim kredencijalima.");
-                    return;
+                    return false;
                 }
                 if(!o.Uspesno)
                 {
                     MessageBox.Show("Pogresni kredencijali. Pokusajte ponovo.");
-                    return;
+                    return false;
                 }
                 else
                 {
                     MessageBox.Show("Uspesno logovanje. Dobrodosli - " + k.Korisnicko_ime + ".");
-                    MainWindow window = new MainWindow(k);
+                    Korisnik l = (Korisnik)o.Rezultat;
+                    MainWindow window = new MainWindow(l);
                     window.Show();
+                    return true;
                 }
+                    
                 
             }
             catch (Exception x)
             {
                 Debug.WriteLine(x.Message);
             }
+            return false;
         }
 
         internal async Task RegistrujSe(string korisnicko_ime, string lozinka)

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.Versioning;
 using System.Text;
 using Zajednicki;
+using Zajednicki.Domen;
 
 namespace Server
 {
@@ -28,11 +29,11 @@ namespace Server
             return ((DostupnostSO)dos).Uspesno;
         }
 
-        internal async Task<bool> LogIn(Korisnik korisnik)
+        internal async Task<Odgovor> LogIn(Korisnik korisnik)
         {
             SystemOperationsBase log = new LoginSO(korisnik);
             log.Execute();
-            return ((LoginSO)log).Uspesno;
+            return ((LoginSO)log).o;
 
         }
 
@@ -41,6 +42,14 @@ namespace Server
             SystemOperationsBase pob = new PretraziSO(v);
             pob.Execute();
             return ((PretraziSO)pob).Uspesno;
+        }
+
+        internal async Task<List<Korisnik>> Prijatelji(Korisnik id)
+        {
+            SystemOperationsBase pob = new VratiPrijateljeSO(id);
+            pob.Execute();
+            return ((VratiPrijateljeSO)pob).lista;
+
         }
 
         internal async Task<bool> RegistrujSe(Korisnik korisnik)

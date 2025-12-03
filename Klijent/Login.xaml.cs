@@ -25,7 +25,10 @@ namespace Klijent
 
         private async void Login_Click(object sender, RoutedEventArgs e)
         {
-            await LoginGuiKontroler.Instance.LogIn(txt_korisnicko_ime.Text,txt_lozinka.Password);
+            bool successful = await LoginGuiKontroler.Instance.LogIn(txt_korisnicko_ime.Text,txt_lozinka.Password);
+            if(successful)
+                Close();
+
         }
 
         private async void Register_Click(object sender, RoutedEventArgs e)

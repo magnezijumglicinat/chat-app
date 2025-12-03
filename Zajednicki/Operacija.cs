@@ -9,6 +9,7 @@ namespace Zajednicki
         LogIn,
         RegistrujSe,
         Dostupnost,
-        Pretraga
+        Pretraga,
+        Prijatelji
     };
 }

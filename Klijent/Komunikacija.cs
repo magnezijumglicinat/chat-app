@@ -54,7 +54,11 @@ namespace Klijent
                 Zahtev z = new Zahtev(Operacija.LogIn,k);
                 await serializer.SendAsync(z, token);
                 Odgovor odgovor = await serializer.ReceiveAsync<Odgovor>(token);
-
+                if (odgovor.Rezultat is JsonElement je)
+                {
+                    Korisnik l = serializer.ReadType<Korisnik>(je);
+                    odgovor.Rezultat = l;
+                }
                 return odgovor;
             }
             catch (Exception ex)
@@ -73,6 +77,7 @@ namespace Klijent
                 Zahtev z = new Zahtev(Operacija.RegistrujSe, k);
                 await serializer.SendAsync(z);
                 Odgovor o = await serializer.ReceiveAsync<Odgovor>();
+
                 return o;
             }
             catch(Exception x)
@@ -115,6 +120,28 @@ namespace Klijent
                 o.Poruka = "greska";
                 return o;
             }
+        }
+
+        internal async Task<Odgovor> vratiSvePrijatelje(Korisnik id)
+        {
+            try
+            {
+                Zahtev z = new Zahtev(Operacija.Prijatelji,id);
+                serializer.SendAsync(z);
+                Odgovor o = await serializer.ReceiveAsync<Odgovor>();
+                if (o.Rezultat is JsonElement je)
+                {
+                    List<Korisnik> l = serializer.ReadType<List<Korisnik>>(je);
+                    o.Rezultat = l;
+                }
+                return o;
+            }
+            catch(Exception x)
+            {
+                Odgovor o = new Odgovor();
+                return o;
+            }
+
         }
     }
 }

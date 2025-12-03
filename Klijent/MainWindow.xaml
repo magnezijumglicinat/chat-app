@@ -11,7 +11,7 @@
         Background="#101011"
         WindowStyle="None"
         ResizeMode="CanResizeWithGrip"
-        AllowsTransparency="False">
+        AllowsTransparency="False" Loaded="Window_Loaded">
 
     <Window.Resources>
         <SolidColorBrush x:Key="PrimaryBackground" Color="#101011"/>

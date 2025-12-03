@@ -9,7 +9,7 @@ namespace SO
     public class LoginSO : SystemOperationsBase
     {
         private Korisnik k;
-        public bool Uspesno = false;
+        public Odgovor o = new Odgovor();
         public LoginSO(Korisnik k)
         {
             
@@ -18,8 +18,10 @@ namespace SO
         }
         protected override void ExecuteConcreteOperation()
         {
-            if ((Korisnik)broker.getCriteria(k) != null)
-                Uspesno = true;
+            o.Rezultat = (Korisnik)broker.getCriteria(k);
+            if (o.Rezultat != null)
+                o.Uspesno = true;
+            
             
 
             
